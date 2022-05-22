@@ -6,7 +6,7 @@
 /*   By: iraqi <iraqi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 01:25:26 by iraqi             #+#    #+#             */
-/*   Updated: 2022/05/22 03:46:47 by iraqi            ###   ########.fr       */
+/*   Updated: 2022/05/22 21:01:21 by iraqi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@
 typedef	struct	s_sig_data
 {
 	pid_t	pid;
-	int	is_hands_shaken;
+	int		msg_len;
+	int		is_hands_shaken;
 }				t_sdata;
 
 t_sdata	sig_data;

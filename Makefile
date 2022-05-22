@@ -1,6 +1,6 @@
 CFLAGS = -Werror -Wall -Wextra
 
-NAME = server
+S_NAME = server
 
 SRC = server.c\
 		put_str.c
@@ -8,12 +8,22 @@ SRC = server.c\
 OBJ = server.o\
 		put_str.o
 
+C_NAME = client
+
+C_SRC = client.c\
+		put_str.c
+
+C_OBJ = client.o\
+		put_str.o
 
 
-all : $(NAME)
+all : $(S_NAME) $(C_NAME)
 
-$(NAME) : $(OBJ)
-	@gcc $(CFLAGS) -o $(NAME) $(OBJ) 
+$(S_NAME) : $(OBJ)
+	@gcc $(CFLAGS) -o $(S_NAME) $(OBJ) 
+
+$(C_NAME) : $(C_OBJ)
+	@gcc $(CFLAGS) -o $(C_NAME) $(C_OBJ) 
 
 %.o: %.c 
 	@gcc $(CFLAGS) -c $<
@@ -21,10 +31,12 @@ $(NAME) : $(OBJ)
 clean :
 	@echo "Removing object files ..."
 	@rm -f $(OBJ)
+	@rm -f $(C_OBJ)
 
 fclean : clean
-	@echo "Removing $(NAME) ..."
-	@rm -f $(NAME)
+	@echo "Removing $(S_NAME) ..."
+	@rm -f $(S_NAME)
+	@rm -f $(C_NAME)
 
 re : fclean all
 

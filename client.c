@@ -6,7 +6,7 @@
 /*   By: iraqi <iraqi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 05:02:21 by iraqi             #+#    #+#             */
-/*   Updated: 2022/05/22 04:28:31 by iraqi            ###   ########.fr       */
+/*   Updated: 2022/05/22 22:37:02 by iraqi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,19 +101,21 @@ void	c_sig_handler(int signo, siginfo_t *siginfo, void *unused)
 		if (signo == SIGUSR1)
 			sig_data.is_hands_shaken = 1;
 	put_str("hands shaken");
+	send_msg_len_to_server(sig_data.msg_len, sig_data.pid);
 }
 
 int	main(int ac, char **av)
 {
 	struct	sigaction	sig;
-	
+
 	if (ac != 3)
 		(put_str("Error in Arguments"), exit(EXIT_FAILURE));
+	sig_data.msg_len = ft_strlen(av[2]);
 	sig_data.pid = get_pid_from_arg(av[1]);
 	sig.sa_flags = SA_RESTART | SA_NODEFER | SA_SIGINFO;
 	sigemptyset(&sig.sa_mask);
 	sig.sa_sigaction = c_sig_handler;
-	if(sigaction(SIGUSR1, &sig, NULL) == -1)
+	if (sigaction(SIGUSR1, &sig, NULL) == -1)
 		put_str("Error in sigaction\n");
 	if (pid_checker(sig_data.pid) != 0 || shake_hands(sig_data.pid) != 0)
 		exit(EXIT_FAILURE);
