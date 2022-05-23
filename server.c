@@ -6,13 +6,13 @@
 /*   By: iraqi <iraqi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 01:25:28 by iraqi             #+#    #+#             */
-/*   Updated: 2022/05/22 04:10:58 by iraqi            ###   ########.fr       */
+/*   Updated: 2022/05/23 21:48:05 by iraqi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
 
-void		on_shaking_hands(int signo, int c_pid)
+void	on_shaking_hands(int signo, int c_pid)
 {
 	static	int	counter;
 
@@ -21,7 +21,6 @@ void		on_shaking_hands(int signo, int c_pid)
 		sig_data.is_hands_shaken = 1;
 		put_str("CONNECTION ETABLISHED\n");
 		printf("%d\n", c_pid);
-		// send signal to client to confim connection
 		if (kill(c_pid, SIGUSR1) == -1)
 			put_str("Client pid does not exist");
 		return;
@@ -46,7 +45,7 @@ void	sig_handler(int signo, siginfo_t *siginfo, void *unused)
 		on_shaking_hands(signo, siginfo->si_pid);
 }
 
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
 	struct sigaction t_sigaction;
 	(void)av;
