@@ -3,10 +3,12 @@ CFLAGS = -Werror -Wall -Wextra
 S_NAME = server
 
 SRC = server.c\
-		put_str.c
+		put_str.c\
+		server_utils.c
 
 OBJ = server.o\
-		put_str.o
+		put_str.o\
+		server_utils.o
 
 C_NAME = client
 

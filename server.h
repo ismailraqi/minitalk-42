@@ -6,7 +6,7 @@
 /*   By: iraqi <iraqi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 01:25:26 by iraqi             #+#    #+#             */
-/*   Updated: 2022/05/23 23:25:26 by iraqi            ###   ########.fr       */
+/*   Updated: 2022/05/24 22:46:17 by iraqi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,7 @@ typedef	struct	s_sig_data
 t_sdata	sig_data;
 
 void	put_str(char *src);
+int		enqueue(u_int8_t signal);
+void	dequeue();
 
 #endif
