@@ -4,11 +4,13 @@ S_NAME = server
 
 SRC = server.c\
 		put_str.c\
-		server_utils.c
+		server_utils.c\
+		queue_utils.c
 
 OBJ = server.o\
 		put_str.o\
-		server_utils.o
+		server_utils.o\
+		queue_utils.o
 
 C_NAME = client
 

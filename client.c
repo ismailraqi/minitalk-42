@@ -6,7 +6,7 @@
 /*   By: iraqi <iraqi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 05:02:21 by iraqi             #+#    #+#             */
-/*   Updated: 2022/05/22 22:37:02 by iraqi            ###   ########.fr       */
+/*   Updated: 2022/05/30 21:19:16 by iraqi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,11 @@ int	send_msg_len_to_server(int msg_len, pid_t pid)
 		k = msg_len >> i;
 		if (k & 1)
 		{
-			if (send_bit(pid, SIGUSR1, 50) != 0)
+			if (send_bit(pid, SIGUSR1, 500) != 0)
 				return (-1);
 		}
 		else
-			if (send_bit(pid, SIGUSR2, 50) != 0)
+			if (send_bit(pid, SIGUSR2, 500) != 0)
 				return (-1);
 	}
 	return (0);
@@ -60,7 +60,7 @@ int	shake_hands(pid_t pid)
 	byte = -1;
 	if (sig_data.is_hands_shaken != 1)
 		while (++byte < 8)
-			if (send_bit(pid, SIGUSR2, 50) != 0)
+			if (send_bit(pid, SIGUSR2, 100) != 0)
 				return (0);
 	usleep(700);
 	return (sig_data.is_hands_shaken == 1);
@@ -100,8 +100,11 @@ void	c_sig_handler(int signo, siginfo_t *siginfo, void *unused)
 	if (siginfo->si_pid == sig_data.pid)
 		if (signo == SIGUSR1)
 			sig_data.is_hands_shaken = 1;
-	put_str("hands shaken");
+	put_str("hands shaken\n");
+	usleep(300);
 	send_msg_len_to_server(sig_data.msg_len, sig_data.pid);
+	// TODO: send msg bit by bit to the server ! and sleep program
+	
 }
 
 int	main(int ac, char **av)

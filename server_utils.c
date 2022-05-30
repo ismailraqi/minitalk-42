@@ -6,55 +6,71 @@
 /*   By: iraqi <iraqi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 21:49:52 by iraqi             #+#    #+#             */
-/*   Updated: 2022/05/25 04:29:24 by iraqi            ###   ########.fr       */
+/*   Updated: 2022/05/28 05:50:59 by iraqi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
 
-int	enqueue(u_int8_t signal)
-{
-	t_node *newNode;
-	
-	newNode = malloc(sizeof(t_node));
-	if (!newNode)
-		return (-1);
-	newNode->signal = signal;
-	newNode->next = NULL;
+// int		enqueue(u_int8_t signal)
+// {
+// 	t_node *newNode;
+// 	newNode = malloc(sizeof(t_node));
+// 	if (!newNode)
+// 		return (-1);
+// 	newNode->signal = signal;
+// 	newNode->next = NULL;
+// 	if(sig_data.queue->head == NULL && sig_data.queue->tail == NULL)
+// 	{
+// 		sig_data.queue->head = sig_data.queue->tail = newNode;
+// 		sig_data.node = newNode;
+// 	}
+// 	else
+// 	{
+// 		sig_data.queue->tail->next = newNode;
+// 		sig_data.node = newNode;
+// 	}
+// 	usleep(50);
+// 	return (0);
+// }
+// void	dequeue()
+// {
+// 	t_node *temp;
+// 	temp = malloc(sizeof(t_node));
+// 	if (!temp)
+// 		(put_str("malloc dequeue error\n"), exit(EXIT_FAILURE));
+// 	if(sig_data.queue->head == NULL)
+// 		(put_str("Queue is Empty. Unable to perform dequeue\n"), free(temp), exit(EXIT_FAILURE));
+// 	else
+// 	{
+// 		temp = sig_data.queue->head;
+// 		sig_data.queue->head = sig_data.queue->head->next;
+// 		put_str("called");
+// 		if(sig_data.queue->head == NULL)
+// 			sig_data.queue->tail = NULL;
+// 		//free(temp);
+// 	}
+// }
 
-	//if it is the first node
-	if(sig_data.queue->head == NULL && sig_data.queue->tail == NULL)
-		//make both front and rear points to the new node
-		sig_data.queue->head = sig_data.queue->tail = newNode;
-	else
+int		decoding_msg_len(void)
+{
+	int	counter;
+	counter = sig_data.counter;
+	put_str("\n");
+	while (--counter >= 0)
 	{
-		//add newnode in rear->next
-		sig_data.queue->tail->next = newNode;
-		//make the new node as the rear node
-		sig_data.queue->tail = newNode;
+		//TODO decoding binary to decimal
+		if (sig_data.queue->head->signal == 1)
+		{
+			deQueue(sig_data.queue);
+			put_str("1");
+		}
+		else if (sig_data.queue->head->signal == 0)
+		{
+			deQueue(sig_data.queue);
+			put_str("0");
+		}
 	}
-	
+	put_str("\ndone\n");	
 	return (0);
-}
-
-void dequeue()
-{
-	//used to free the first node after dequeue
-	t_node *temp;
-
-	if(sig_data.queue->head == NULL)
-		printf("Queue is Empty. Unable to perform dequeue\n");
-	else
-	{
-		//take backup
-		temp = sig_data.queue->head;
-		//make the front node points to the next node
-		//logically removing the front element
-		sig_data.queue->head = sig_data.queue->head->next;
-		//if front == NULL, set rear = NULL
-		if(sig_data.queue->head == NULL)
-			sig_data.queue->tail = NULL;
-	   //free the first node
-	   free(temp);
-	}
 }
