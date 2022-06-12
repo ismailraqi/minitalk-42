@@ -6,7 +6,7 @@
 /*   By: iraqi <iraqi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 21:49:52 by iraqi             #+#    #+#             */
-/*   Updated: 2022/05/28 05:50:59 by iraqi            ###   ########.fr       */
+/*   Updated: 2022/06/12 05:03:10 by iraqi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@
 int		decoding_msg_len(void)
 {
 	int	counter;
-	counter = sig_data.counter;
+	counter = 32;
 	put_str("\n");
-	while (--counter >= 0)
+	while (counter-- >= 0)
 	{
 		//TODO decoding binary to decimal
 		if (sig_data.queue->head->signal == 1)
@@ -71,6 +71,6 @@ int		decoding_msg_len(void)
 			put_str("0");
 		}
 	}
-	put_str("\ndone\n");	
+	sig_data.is_hands_shaken = 0;
 	return (0);
 }

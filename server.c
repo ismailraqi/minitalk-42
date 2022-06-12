@@ -6,32 +6,32 @@
 /*   By: iraqi <iraqi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 01:25:28 by iraqi             #+#    #+#             */
-/*   Updated: 2022/05/30 21:31:19 by iraqi            ###   ########.fr       */
+/*   Updated: 2022/06/12 05:03:01 by iraqi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
 
-void	on_shaking_hands(int signo, int c_pid)
+void	on_shaking_hands(int c_pid)
 {
-	
-
 	if (sig_data.counter == 7)
 	{
 		sig_data.is_hands_shaken = 1;
-		put_str("CONNECTION ETABLISHED\n");
+		put_str("CONNECTION ESTABLISHED\n");
 		if (kill(c_pid, SIGUSR1) == -1)
 			(exit(EXIT_FAILURE), put_str("Client pid does not exist"));
 		sig_data.pid = c_pid;
 		sig_data.counter = 0;
+		sig_data.len_done = 0;
 		return;
 	}
-	if (signo == SIGUSR2)
-		sig_data.counter++;
+	sig_data.counter++;
 }
 
 void	cath_msg_len(int c_pid, int signo)
-{	
+{
+	if (sig_data.counter == 32)
+		(sig_data.len_done = 1, sig_data.counter = 0);
 	if (c_pid == sig_data.pid)
 	{
 		enQueue(sig_data.queue, signo);
@@ -44,22 +44,22 @@ void	sig_handler(int signo, siginfo_t *siginfo, void *unused)
 {
 	(void)unused;
 
-	if (sig_data.is_hands_shaken != 0)
+	if (!sig_data.is_hands_shaken && signo == SIGUSR2)
+		on_shaking_hands(siginfo->si_pid);
+	if (sig_data.is_hands_shaken)
 	{
-		if (sig_data.counter < 32)
+		if (!sig_data.len_done)
 		{
 			if (signo == SIGUSR1)
 				(put_str("1") ,cath_msg_len(siginfo->si_pid, 1));
 			if (signo == SIGUSR2)
 				(put_str("0") ,cath_msg_len(siginfo->si_pid, 0));
 		}
-		if (sig_data.counter >= 32)
+		if (sig_data.len_done)
 		{
 			sig_data.msg_len = decoding_msg_len();
 		}
 	}
-	else
-		on_shaking_hands(signo, siginfo->si_pid);
 }
 
 int	main(int ac, char **av)
@@ -71,7 +71,7 @@ int	main(int ac, char **av)
 		exit(EXIT_FAILURE);
 	printf("Processe ID = %d\n", getpid());
 	put_str("Listening\n");
-	t_sigaction.sa_flags = SA_RESTART | SA_NODEFER | SA_SIGINFO;
+	t_sigaction.sa_flags = SA_NODEFER | SA_SIGINFO;
 	sigemptyset(&t_sigaction.sa_mask);
 	t_sigaction.sa_sigaction = sig_handler;
 	sig_data.queue = createQueue();
@@ -79,7 +79,7 @@ int	main(int ac, char **av)
 		put_str("Error in sigaction\n");
 	if(sigaction(SIGUSR2, &t_sigaction, NULL) == -1)
 		put_str("Error in sigaction\n");
-	while (1){};
-	
+	while (1)
+		pause();
 	return (0);
 }

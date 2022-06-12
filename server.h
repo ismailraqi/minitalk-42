@@ -6,7 +6,7 @@
 /*   By: iraqi <iraqi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 01:25:26 by iraqi             #+#    #+#             */
-/*   Updated: 2022/05/28 01:11:30 by iraqi            ###   ########.fr       */
+/*   Updated: 2022/05/30 21:43:15 by iraqi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef	struct	s_sig_data
 	int		counter;
 	pid_t	pid;
 	int		msg_len;
+	int		len_done;
 	int		is_hands_shaken;
 	t_node	*node;
 	t_queue	*queue;
