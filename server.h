@@ -6,7 +6,7 @@
 /*   By: iraqi <iraqi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 01:25:26 by iraqi             #+#    #+#             */
-/*   Updated: 2022/05/30 21:43:15 by iraqi            ###   ########.fr       */
+/*   Updated: 2022/06/13 04:56:34 by iraqi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <math.h>
 
 typedef	struct	s_node
 {
@@ -50,5 +51,7 @@ void 		enQueue(t_queue* queue, int signal);
 void 		deQueue(t_queue* queue);
 int			decoding_msg_len(void);
 pid_t		get_pid_from_arg(char *str);
+void		ft_putnbr(int nb);
+int			ft_atoi(char str);
 
 #endif

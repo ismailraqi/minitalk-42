@@ -6,7 +6,7 @@
 /*   By: iraqi <iraqi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 21:49:52 by iraqi             #+#    #+#             */
-/*   Updated: 2022/06/12 05:03:10 by iraqi            ###   ########.fr       */
+/*   Updated: 2022/06/13 05:02:10 by iraqi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,25 +52,49 @@
 // 	}
 // }
 
+int binary_converter(char *binary, int length)
+{
+	int decimal = 0;
+	int position = 0;
+	int index = length - 1;
+	
+	while (index >= 0)
+	{
+		decimal = decimal + (ft_atoi(binary[index])) * pow(2, position);
+		index--;
+		position++;
+	}
+	return (decimal);
+}
+
 int		decoding_msg_len(void)
 {
-	int	counter;
+	int		counter;
+	int		index;
+	char	*binStr;
+	
 	counter = 32;
-	put_str("\n");
+	binStr = (char *) malloc(sizeof(char) * 33);
+	if (!binStr)
+		(put_str("(malloc) Error in decoding msg len\n"), exit(EXIT_FAILURE));
+	binStr[counter] = '\0';
+	index = 0;
 	while (counter-- >= 0)
 	{
 		//TODO decoding binary to decimal
 		if (sig_data.queue->head->signal == 1)
 		{
 			deQueue(sig_data.queue);
-			put_str("1");
+			binStr[index] = '1';
 		}
 		else if (sig_data.queue->head->signal == 0)
 		{
 			deQueue(sig_data.queue);
-			put_str("0");
+			binStr[index] = '0';
 		}
+		index++;
 	}
+	sig_data.msg_len = binary_converter(binStr, 33);
 	sig_data.is_hands_shaken = 0;
-	return (0);
+	return (1);
 }

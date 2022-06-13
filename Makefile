@@ -3,22 +3,22 @@ CFLAGS = -Werror -Wall -Wextra
 S_NAME = server
 
 SRC = server.c\
-		put_str.c\
+		printing_utils.c\
 		server_utils.c\
 		queue_utils.c
 
 OBJ = server.o\
-		put_str.o\
+		printing_utils.o\
 		server_utils.o\
 		queue_utils.o
 
 C_NAME = client
 
 C_SRC = client.c\
-		put_str.c
+		printing_utils.c
 
 C_OBJ = client.o\
-		put_str.o
+		printing_utils.o
 
 
 all : $(S_NAME) $(C_NAME)

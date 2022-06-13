@@ -6,7 +6,7 @@
 /*   By: iraqi <iraqi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 01:25:28 by iraqi             #+#    #+#             */
-/*   Updated: 2022/06/12 05:03:01 by iraqi            ###   ########.fr       */
+/*   Updated: 2022/06/13 05:02:41 by iraqi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ void	on_shaking_hands(int c_pid)
 {
 	if (sig_data.counter == 7)
 	{
-		sig_data.is_hands_shaken = 1;
-		put_str("CONNECTION ESTABLISHED\n");
 		if (kill(c_pid, SIGUSR1) == -1)
 			(exit(EXIT_FAILURE), put_str("Client pid does not exist"));
+		put_str("CONNECTION ESTABLISHED\n");
+		sig_data.is_hands_shaken = 1;
 		sig_data.pid = c_pid;
 		sig_data.counter = 0;
 		sig_data.len_done = 0;
@@ -51,13 +51,14 @@ void	sig_handler(int signo, siginfo_t *siginfo, void *unused)
 		if (!sig_data.len_done)
 		{
 			if (signo == SIGUSR1)
-				(put_str("1") ,cath_msg_len(siginfo->si_pid, 1));
+				cath_msg_len(siginfo->si_pid, 1);
 			if (signo == SIGUSR2)
-				(put_str("0") ,cath_msg_len(siginfo->si_pid, 0));
+				cath_msg_len(siginfo->si_pid, 0);
 		}
 		if (sig_data.len_done)
 		{
-			sig_data.msg_len = decoding_msg_len();
+			if(decoding_msg_len())
+				(put_str("Msg len = "),ft_putnbr(sig_data.msg_len));
 		}
 	}
 }
